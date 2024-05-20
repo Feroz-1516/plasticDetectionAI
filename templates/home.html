@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <!-- <div class="card-wrapper">
+
+    <div class="card">
+
+      <h1 class="center">Create an Account</h1>
+
+      <form name="signup_form">
+
+        <label for="name">Name</label>
+        <input type="text" name="name" class="field" required>
+
+        <label for="email">Email</label>
+        <input type="email" name="email" class="field" required>
+
+        <label for="password">Password</label>
+        <input type="password" name="password" class="field" required>
+
+        <p class="error error--hidden"></p>
+
+        <input type="submit" value="Sign Up" class="btn">
+      
+      </form>
+      
+    </div>
+
+    <div class="card">
+
+      <h1 class="center">Log In</h1>
+
+      <form name="login_form">
+
+        <label for="email">Email</label>
+        <input type="email" name="email" class="field" required>
+
+        <label for="password">Password</label>
+        <input type="password" name="password" class="field" required>
+
+        <p class="error error--hidden"></p>
+
+        <input type="submit" value="Log In" class="btn">
+      
+      </form>
+      
+    </div>
+  
+  </div> -->
+
+  <!--  -->
+  <div class="body" id="bodyLogin">
+    
+    <div class="toggle-container">
+      <label class="toggle-switch">
+        <input type="checkbox" id="toggle" class="toggle-input">
+        <span class="toggle-slider"></span>
+      </label>
+      <p id="status">User</p>
+    </div>
+
+    
+    <div class="wrapper">
+      <div class="title-text">
+        <div class="title login">Login</div>
+        <div class="title signup">Signup</div>
+      </div>
+      <div class="form-container">
+        <div class="slide-controls  access-control">
+          <input type="radio" name="slide" id="login" checked>
+          <input type="radio" name="slide" id="signup">
+          <label for="login" class="slide login">Login</label>
+          <label for="signup" class="slide signup">Signup</label>
+          <div class="slider-tab"></div>
+        </div>
+        <div class="form-inner">
+          <form action="#" class="login" name="login_form">
+            <div class="field">
+              <input type="email" name="email" placeholder="Email Address" required>
+            </div>
+            <div class="field">
+              <input type="password" name="password" placeholder="Password" required>
+            </div>
+            <p style="margin-top: 10px; margin-bottom: 10px; color: red;" class="error error--hidden"></p>
+            <div class="pass-link"><a href="#">Forgot password?</a></div>
+            <div class="field btn1">
+              <div class="btn-layer"></div>
+              <input type="submit" value="Log In">
+            </div>  
+            <div class="signup-link access-control">Not a member? <a href="">Signup now</a></div>
+          </form>
+          <form action="#" class="signup" name="signup_form">
+            <div class="field">
+              <input type="text" name="name" placeholder="Name" required>
+            </div>
+            <div class="field">
+              <input type="text" name="email" placeholder="Email Address" required>
+            </div>
+            <div class="field">
+              <input type="password"  name="password" placeholder="Password" required>
+            </div>
+            <p style="margin-top: 10px; color: red;" class="error error--hidden"></p>
+
+            <div class="field btn1">
+              <div class="btn-layer"></div>
+              <input type="submit" value="Sign Up">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Authority Section</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ion-rangeslider@2.3.1/css/ion.rangeSlider.min.css" />
+  <style>
+    .container-fluid {
+      width: 100%;
+      height: 100%;
+    }
+
+    .card {
+      border-radius: 35px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      margin: 0 auto;
+    }
+
+
+    .font-weight-bold {
+      font-weight: bold;
+      color: #333;
+      /* Change the text color */
+    }
+
+    .image-button {
+      padding: 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .image-button i {
+      font-size: 24px;
+      color: #007bff;
+      /* Blue color  the image icon */
+    }
+
+    .tick-icon {
+      cursor: pointer;
+    }
+
+    .explain-icon {
+      cursor: pointer;
+    }
+
+    .modal-title {
+      color: #007bff;
+    }
+
+    .sidebar {
+      z-index: 100;
+      padding: 0px 0px;
+      box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+      background-color: #dcedff;
+      height: 83%;
+      position: fixed;
+      top: 100px;
+      bottom: 0;
+      left: 0;
+      margin: 15px 10px 10px 10px;
+      border-radius: 15px;
+    }
+
+    .container-fluid {
+      padding-top: 100px;
+    }
+
+    .sidebar-sticky {
+      position: relative;
+      top: 0;
+      height: calc(100vh - 48px);
+      padding-top: 48px;
+      overflow-x: hidden;
+    }
+
+    .custom-mt {
+      margin-top: 40px;
+    }
+
+    .nav-container {
+      padding: 15px;
+      background-color: #dcedff;
+      height: 100%;
+      border-radius: 15px;
+
+    }
+
+    .nav-link {
+      color: #333;
+      font-weight: bold;
+      padding: 5px 15px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .completed-card {
+      background-color: #ffffff;
+      border-radius: 35px;
+    }
+
+    .nav-link.active {
+      color: #007bff;
+    }
+
+    /* Custom styles for the plastic count slider */
+    #plastic-count-filter {
+      width: 100%;
+      appearance: none;
+      height: 10px;
+      border-radius: 5px;
+      background: #ddd;
+      outline: none;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+
+    #plastic-count-filter::-webkit-slider-thumb {
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #3578ff;
+      cursor: pointer;
+    }
+
+    #plastic-count-filter::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #2a74d4;
+      cursor: pointer;
+    }
+
+    @media (max-width: 767px) {
+      .container-fluid {
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .card {
+        width: 100%;
+        border-radius: 35px;
+      }
+
+      .tab-pane.fade.show.active {
+        padding: 0;
+      }
+    }
+
+    /* Styling for main content */
+    .main-content {
+      background-color: #dcedff;
+      /* Slight blue shade */
+      overflow-y: auto;
+      padding: 20px;
+      border-radius: 15px
+    }
+
+    main {
+      display: block;
+      float: right;
+    }
+
+    .no-plastics-alert {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+      color: #721c24;
+      padding: 0.75rem 1.25rem;
+      border-radius: 0.25rem;
+      margin-top: 1rem;
+    }
+
+    .no-plastics-icon {
+      font-size: 1.5rem;
+      margin-right: 0.5rem;
+    }
+
+    .no-plastics-text {
+      font-weight: bold;
+    }
+
+    .close-icon {
+      cursor: pointer;
+    }
+
+    .close-icon:hover {
+      color: #721c24;
+    }
+
+    /* Main content headings */
+    .main-heading {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .tab-content {
+      margin-top: 15px;
+      border-radius: 30px;
+    }
+
+    .radio-section {
+      margin: 20px 0;
+    }
+
+    .radio-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .radio-item {
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .radio-item input[type="radio"] {
+      opacity: 0;
+      cursor: pointer;
+      margin-right: 8px;
+    }
+
+    .radio-item label {
+      font-size: 16px;
+      cursor: pointer;
+      color: #555;
+      margin-left: 20px;
+    }
+
+    .radio-item label:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      border: 2px solid #007bff;
+      border-radius: 50%;
+      background-color: white;
+      transition: border-color 0.3s ease;
+    }
+
+    .radio-item input[type="radio"]:checked+label:before {
+      border-color: #007bff;
+    }
+
+    /* Additional styling for a clean and simple design */
+    .radio-list .radio-item label:before {
+      content: " ";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: white;
+      border: 2px solid #007bff;
+      transition: background-color 0.3s ease;
+    }
+
+    .radio-item input[type="radio"]:checked+label:before {
+      background-color: #007bff;
+    }
+
+
+
+    /* Style the label */
+    .form-check-label {
+      margin-left: 30px;
+      font-weight: normal;
+      cursor: pointer;
+    }
+
+    /*slider*/
+    .range-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .sliders-control {
+      flex: 1;
+      margin-right: 10px;
+    }
+
+    .form-control-1 {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-control-container {
+      display: flex;
+      align-items: center;
+      margin-top: 5px;
+    }
+
+    .form-control-label {
+      margin-right: 10px;
+    }
+
+    .form-control-input {
+      width: 25px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+    }
+
+    /* Additional styling for ion-range-slider */
+    .irs {
+      margin-top: 5px;
+    }
+
+    .irs-grid-pol {
+      background-color: #ccc;
+    }
+
+    .irs-grid-text {
+      font-size: 12px;
+      color: #333;
+    }
+
+    .irs-from,
+    .irs-to {
+      font-size: 14px;
+      color: #333;
+    }
+
+    .range_container {
+      display: flex;
+      flex-direction: column;
+      width: 80%;
+      margin: 30px 0px 20px 0px;
+    }
+
+    .sliders_control {
+      position: relative;
+      min-height: 25px;
+    }
+
+    .form_control {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      font-size: 24px;
+      color: #635a5a;
+    }
+
+
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      pointer-events: all;
+      width: 24px;
+      height: 24px;
+      background-color: #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 0 1px #C6C6C6;
+      cursor: pointer;
+    }
+
+    input[type=range]::-moz-range-thumb {
+      -webkit-appearance: none;
+      pointer-events: all;
+      width: 24px;
+      height: 24px;
+      background-color: #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 0 1px #C6C6C6;
+      cursor: pointer;
+    }
+
+    input[type=range]::-webkit-slider-thumb:hover {
+      background: #f7f7f7;
+    }
+
+    input[type=range]::-webkit-slider-thumb:active {
+      box-shadow: inset 0 0 3px #387bbe, 0 0 9px #387bbe;
+      -webkit-box-shadow: inset 0 0 3px #387bbe, 0 0 9px #387bbe;
+    }
+
+    input[type="number"] {
+      color: #8a8383;
+      width: 50px;
+      height: 30px;
+      font-size: 20px;
+      border: none;
+    }
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      opacity: 1;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 2px;
+      width: 100%;
+      position: absolute;
+      background-color: #C6C6C6;
+      pointer-events: none;
+    }
+
+    #fromSlider {
+      height: 0;
+      z-index: 1;
+    }
+
+    .sidebar {
+      padding: 0px !important;
+      /* Reset margin to 0 */
+    }
+
+    .filter-form {
+      top: -1px;
+      position: absolute;
+    }
+
+    .form_control {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .form_control_container__time__input {
+      color: rgb(66, 66, 66) !important;
+      font-size: 18px !important;
+      background-color: transparent;
+      /* Set the background to transparent */
+    }
+
+    .form_control_container__time__input:focus {
+      outline: none;
+      border-color: #007bff;
+      background-color: white;
+      /* Set the background to white on focus if needed */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="row" style="height: 100%;">
+      <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+        <div class="position-sticky nav-container">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" href="#pending" data-toggle="tab">
+                <i class="fas fa-hourglass-start"></i> PENDING REQUESTS
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="#completed" data-toggle="tab">
+                <i class="fas fa-check-circle"></i> COMPLETED REQUESTS
+              </a>
+            </li>
+          </ul><br>
+          <div class="filter-section">
+            <h6 class="font-weight-bold mt-1">Filters:</h6>
+            <form id="filter-form">
+              <div class="range_container">
+                <label for="city-filter">Plastic:</label><br>
+                <div class="sliders_control">
+                  <div class="slider-range">
+                    <input id="fromSlider" type="range" value="0" min="0" max="100" />
+                    <input id="toSlider" type="range" value="55" min="0" max="100" />
+                  </div><br>
+                  <div class="form_control">
+                    <input class="form_control_container__time__input" type="number" id="fromInput" value="0" min="0"
+                      max="100" />
+                    <input class="form_control_container__time__input" type="number" id="toInput" value="100" min="0"
+                      max="100" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- New city filter -->
+              <div class="form-group">
+                <label for="city-filter">City:</label>
+                <select class="form-control-1" id="city-filter" name="city">
+                  <option value="">All</option>
+                </select>
+              </div>
+
+              <!-- New state filter -->
+              <div class="form-group">
+                <label for="state-filter">State:</label>
+                <select class="form-control-1" id="state-filter" name="state">
+                  <option value="">All</option>
+                </select>
+              </div>
+              <label>Status:</label>
+              <!-- Use radio buttons for status selection -->
+              <section class="radio-section">
+                <div class="radio-list">
+                  <div class="radio-item"><input name="radio" id="radio1" type="radio" value="pending"><label
+                      for="radio1">Pending</label></div>
+                  <div class="radio-item"><input name="radio" id="radio2" type="radio" value="completed"><label
+                      for="radio2">Completed</label></div>
+                </div>
+              </section>
+              <button type="submit" class="btn btn-primary">Apply Filters</button><br><br><br>
+
+
+
+            </form>
+          </div>
+
+        </div>
+      </nav>
+
+
+      <main role="main" class="col-md-10 ms-sm-auto col-lg-10 px-md-4">
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="pending">
+            <div class="main-content">
+              <h2 class="main-heading">
+                <img src="https://res.cloudinary.com/dzm43ongs/image/upload/v1693377334/mfu4azgg2q9bz9q1wnvy.png" alt=""
+                  class="pending-icon" width="50" height="50">
+                PENDING REQUESTS
+              </h2>
+
+              <!-- Loop through pending documents -->
+              {% for document in documents %}
+              {% if document.status == "pending" %}
+              <div class="card mb-4 shadow-sm" style="color: #007bff;" data-id="{{ document._id }}">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="row mb-1">
+                        <div class="col-md-12"><strong class="font-weight-bold">City</strong></div>
+                        <div class="col-md-12">{{ document.city }}</div>
+                      </div>
+                      <div class="row mb-1">
+                        <div class="col-md-12"><strong class="font-weight-bold">State</strong></div>
+                        <div class="col-md-12">{{ document.state }}</div>
+                      </div>
+                      <div class="row mb-1">
+                        <div class="col-md-12"><strong class="font-weight-bold">Geotag</strong></div>
+                        <div class="col-md-12">{{ document.geotag }}</div>
+                      </div>
+                    </div>
+                    <div class="col-md-4 text-left align-items-left">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="row mb-1">
+                            <div class="col-md-12"><strong class="font-weight-bold">Plastic Count</strong></div>
+                            <div class="col-md-12">{{ document.plastic_count }}</div>
+                          </div>
+                          <div class="row mb-1">
+                            <div class="col-md-12"><strong class="font-weight-bold">Time</strong></div>
+                            <div class="col-md-12">{{ document.time }}</div>
+                          </div>
+                        </div>
+                        <div class="col-md-12 mt-3">
+                          <!-- Anchor tag to redirect to the predicted_image URL -->
+                          <a href="{{ document.predicted_image }}" class="btn btn-link image-button" target="_blank">
+                            <span class="font-weight-bold">Predicted Image</span>
+                            <i class="fas fa-image"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4 text-center align-items-center">
+                      <!-- Tick icon -->
+                      {% if role == 'admin' %}
+                      <!-- Display the tick button only for admin -->
+                      <div class="tick-icon" onclick="moveCardToCompleted('{{ document._id }}')">
+                        <i class="fas fa-check-circle" style="color: green; font-size: 24px; margin-top: 50px;"></i>
+                      </div>
+                      {% endif %}
+                      <div class="mt-5 custom-mt">
+                        <!-- You can adjust the 'mt-5' class value to increase or decrease the spacing -->
+                        <!-- Explainable AI icon -->
+                        <span class="mr-3 font-weight-bold">Explainable AI</span>
+                        <span class="explain-icon" data-toggle="tooltip" data-placement="top"
+                          title="{{ document.explain_ai_content }}">
+                          <i class="fas fa-info-circle"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+          <div class="tab-pane fade" id="completed">
+            <div class="main-content">
+              <h2 class="main-heading">
+                <img src="https://res.cloudinary.com/dzm43ongs/image/upload/v1693377650/kmb0snscauigafrec7av.png" alt=""
+                  class="pending-icon" width="40" height="40">
+                COMPLETED REQUESTS
+              </h2> <!-- Loop through completed documents -->
+              {% for document in documents %}
+              {% if document.status == "completed" %}
+              <div class="card mb-4 shadow-sm" style="color: #007bff;" data-id="{{ document._id }}">
+                <div class="card-body completed-card">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="row mb-1">
+                        <div class="col-md-12"><strong class="font-weight-bold">City</strong></div>
+                        <div class="col-md-12">{{ document.city }}</div>
+                      </div>
+                      <div class="row mb-1">
+                        <div class="col-md-12"><strong class="font-weight-bold">State</strong></div>
+                        <div class="col-md-12">{{ document.state }}</div>
+                      </div>
+                      <div class="row mb-1">
+                        <div class="col-md-12"><strong class="font-weight-bold">Geotag</strong></div>
+                        <div class="col-md-12">{{ document.geotag }}</div>
+                      </div>
+                    </div>
+                    <div class="col-md-4 text-left align-items-left">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="row mb-1">
+                            <div class="col-md-12"><strong class="font-weight-bold">Plastic Count</strong></div>
+                            <div class="col-md-12">{{ document.plastic_count }}</div>
+                          </div>
+                          <div class="row mb-1">
+                            <div class="col-md-12"><strong class="font-weight-bold">Time</strong></div>
+                            <div class="col-md-12">{{ document.time }}</div>
+                          </div>
+                        </div>
+                        <div class="col-md-12 mt-3">
+                          <!-- Anchor tag to redirect to the predicted_image URL -->
+                          <a href="{{ document.predicted_image }}" class="btn btn-link image-button" target="_blank">
+                            <span class="font-weight-bold">Predicted Image</span>
+                            <i class="fas fa-image"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4 text-center align-items-center">
+                      <div class="mt-5 custom-mt" style="margin-top: 50px;">
+                        <!-- Explainable AI icon -->
+                        <span class="mr-3 font-weight-bold">Explainable AI</span>
+                        <span class="explain-icon" data-toggle="tooltip" data-placement="top"
+                          title="{{ document.explain_ai_content }}">
+                          <i class="fas fa-info-circle" style="margin-top: 85px;"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/ion-rangeslider@2.3.1/js/ion.rangeSlider.min.js"></script>
+  <script>
+    function moveCardToCompleted(cardId) {
+      $.ajax({
+        type: "POST",
+        url: "/move_to_completed/" + cardId,
+        success: function (response) {
+          console.log(response);
+
+          // Clear the existing content in the main-content div
+          $('.main-content').empty();
+          $('.main-content').append('<h2 class="main-heading">PENDING REQUESTS</h2>')
+          // Loop through the response and generate HTML for each document
+          response.forEach(function (document) {
+
+            var cardHtml = '<div class="card mb-4 shadow-sm rounded" style="border-radius: 25px; color: #007bff;" data-id="' + document._id + '">' +
+              '<div class="card-body" >' + // Added border-radius
+              '<div class="row">' +
+              '<div class="col-md-4">' +
+              '<div class="row mb-1">' +
+              '<div class="col-md-12"><strong class="font-weight-bold">City</strong></div>' +
+              '<div class="col-md-12">' + document.city + '</div>' +
+              '</div>' +
+              '<div class="row mb-1">' +
+              '<div class="col-md-12"><strong class="font-weight-bold">State</strong></div>' +
+              '<div class="col-md-12">' + document.state + '</div>' +
+              '</div>' +
+              '<div class="row mb-1">' +
+              '<div class="col-md-12"><strong class="font-weight-bold">Geotag</strong></div>' +
+              '<div class="col-md-12">' + document.geotag + '</div>' +
+              '</div>' +
+              '</div>' +
+              '<div class="col-md-4 text-left align-items-left">' +
+              '<div class="row">' +
+              '<div class="col-md-12">' +
+              '<div class="row mb-1">' +
+              '<div class="col-md-12"><strong class="font-weight-bold">Plastic Count</strong></div>' +
+              '<div class="col-md-12">' + document.plastic_count + '</div>' +
+              '</div>' +
+              '<div class="row mb-1">' +
+              '<div class="col-md-12"><strong class="font-weight-bold">Time</strong></div>' +
+              '<div class="col-md-12">' + document.time + '</div>' +
+              '</div>' +
+              '</div>' +
+              '<div class="col-md-12 mt-3">' +
+              '<a href="' +
+              document.predicted_image +
+              '" class="btn btn-link image-button" target="_blank">' +
+              '<span class="font-weight-bold">Predicted Image</span>' +
+              '<i class="fas fa-image"></i>' +
+              '</a>' +
+              '</div>' +
+              '</div>' +
+              '</div>' +
+              '<div class="col-md-4 text-center align-items-center">' +
+              '<div class="tick-icon" onclick="moveCardToCompleted(\'' + document._id + '\')">' +
+              '<i class="fas fa-check-circle" style="color: green; font-size: 24px; margin-top: 50px;"></i>' +
+              '</div>' +
+              '<div class="mt-5">' +
+              '<div class="d-flex justify-content-center align-items-center">' +
+              '<span class="mr-3 font-weight-bold">Explainable AI</span>' +
+              '<span class="explain-icon" data-toggle="tooltip" data-placement="top" title="' + document.explain_ai_content + '">' +
+              '<i class="fas fa-info-circle"></i>' +
+              '</span>' +
+              '</div>' +
+              '</div>' +
+              '</div>' +
+              '</div>' +
+              '</div>' +
+              '</div>' +
+              '</div>';
+
+            var imageModalHtml = '<div class="modal fade" id="imageModal' + document._id + '" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">' +
+              '<div class="modal-dialog modal-dialog-centered" role="document">' +
+              '<div class="modal-content">' +
+              '<div class="modal-header">' +
+              '<h5 class="modal-title" id="imageModalLabel">Predicted Image</h5>' +
+              '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+              '<span aria-hidden="true">&times;</span>' +
+              '</button>' +
+              '</div>' +
+              '<div class="modal-body text-center">' +
+              '<img src="' + document.predicted_image + '" class="img-fluid" alt="Predicted Image">' +
+              '</div>' +
+              '</div>' +
+              '</div>' +
+              '</div>';
+            // Append the card HTML to the main-content div
+            $('.main-content').append(cardHtml);
+          });
+
+        },
+
+        error: function (error) {
+          console.error("Error moving card: " + error.statusText);
+        }
+      });
+    }
+  </script>
+  <!-- <script>
+    const fromSlider = document.getElementById('fromSlider');
+    const toSlider = document.getElementById('toSlider');
+    const fromInput = document.getElementById('fromInput');
+    const toInput = document.getElementById('toInput');
+
+    // Function to update the UI based on slider values
+    function updateUI() {
+      const fromValue = parseInt(fromSlider.value);
+      const toValue = parseInt(toSlider.value);
+
+      // Update input fields
+      fromInput.value = fromValue;
+      toInput.value = toValue;
+
+      // Update slider background
+      const gradient = `linear-gradient(90deg, #C6C6C6 ${fromValue}%, #25daa5 ${toValue}%)`;
+      fromSlider.style.background = gradient;
+      toSlider.style.background = gradient;
+    }
+
+    // Event listener for the "from" slider
+    fromSlider.addEventListener('input', () => {
+      const fromValue = parseInt(fromSlider.value);
+      const toValue = parseInt(toSlider.value);
+
+      if (fromValue > toValue) {
+        fromSlider.value = toValue;
+      }
+
+      updateUI();
+    });
+
+    // Event listener for the "to" slider
+    toSlider.addEventListener('input', () => {
+      const fromValue = parseInt(fromSlider.value);
+      const toValue = parseInt(toSlider.value);
+
+      if (toValue < fromValue) {
+        toSlider.value = fromValue;
+      }
+
+      updateUI();
+    });
+
+    // Event listener for the "from" input
+    fromInput.addEventListener('input', () => {
+      const fromValue = parseInt(fromInput.value);
+      const toValue = parseInt(toSlider.value);
+
+      if (fromValue > toValue) {
+        fromInput.value = toValue;
+      }
+
+      fromSlider.value = fromInput.value;
+      updateUI();
+    });
+
+    // Event listener for the "to" input
+    toInput.addEventListener('input', () => {
+      const fromValue = parseInt(fromSlider.value);
+      const toValue = parseInt(toInput.value);
+
+      if (toValue < fromValue) {
+        toInput.value = fromValue;
+      }
+
+      toSlider.value = toInput.value;
+      updateUI();
+    });
+    function controlFromSlider(fromSlider, toSlider, fromInput) {
+      const fromValue = parseInt(fromSlider.value);
+      const toValue = parseInt(toSlider.value);
+
+      if (fromValue > toValue) {
+        fromSlider.value = toValue;
+      }
+
+      updateUI();
+    }
+
+    // Function to update the "to" slider and input based on input value
+    function controlToSlider(fromSlider, toSlider, toInput) {
+      const toValue = parseInt(toInput.value);
+
+      if (toValue > parseInt(toSlider.max)) {
+        toInput.value = toSlider.max;
+      }
+
+      toSlider.value = toInput.value;
+      updateUI();
+    }
+
+    // Initial UI update
+    updateUI();
+
+    function moveCardToCompleted(cardId) {
+      $.ajax({
+        type: "POST",
+        url: "/move_to_completed/" + cardId,
+        success: function (response) {
+          console.log(response);
+
+          // Clear the existing content in the main-content div
+          $('.main-content').empty();
+          $('.main-content').append('<h2 class="main-heading">PENDING REQUESTS</h2>')
+          // Loop through the response and generate HTML for each document
+          response.forEach(function (document) {
+
+            var cardHtml = '<div class="card mb-4 shadow-sm rounded" style="border-radius: 25px; color: #007bff;" data-id="' + document._id + '">' +
+              '<div class="card-body" >' + // Added border-radius
+              '<div class="row">' +
+              '<div class="col-md-4">' +
+              '<div class="row mb-1">' +
+              '<div class="col-md-12"><strong class="font-weight-bold">City</strong></div>' +
+              '<div class="col-md-12">' + document.city + '</div>' +
+              '</div>' +
+              '<div class="row mb-1">' +
+              '<div class="col-md-12"><strong class="font-weight-bold">State</strong></div>' +
+              '<div class="col-md-12">' + document.state + '</div>' +
+              '</div>' +
+              '<div class="row mb-1">' +
+              '<div class="col-md-12"><strong class="font-weight-bold">Geotag</strong></div>' +
+              '<div class="col-md-12">' + document.geotag + '</div>' +
+              '</div>' +
+              '</div>' +
+              '<div class="col-md-4 text-left align-items-left">' +
+              '<div class="row">' +
+              '<div class="col-md-12">' +
+              '<div class="row mb-1">' +
+              '<div class="col-md-12"><strong class="font-weight-bold">Plastic Count</strong></div>' +
+              '<div class="col-md-12">' + document.plastic_count + '</div>' +
+              '</div>' +
+              '<div class="row mb-1">' +
+              '<div class="col-md-12"><strong class="font-weight-bold">Time</strong></div>' +
+              '<div class="col-md-12">' + document.time + '</div>' +
+              '</div>' +
+              '</div>' +
+              '<div class="col-md-12 mt-3">' +
+              '<button type="button" class="btn btn-link image-button" data-toggle="modal" data-target="#imageModal' + document._id + '">' +
+              '<span class="font-weight-bold">Predicted Image</span>' +
+              '<i class="fas fa-image"></i>' +
+              '</button>' +
+              '</div>' +
+              '</div>' +
+              '</div>' +
+              '<div class="col-md-4 text-center align-items-center">' +
+              '<div class="tick-icon" onclick="moveCardToCompleted(\'' + document._id + '\')">' +
+              '<i class="fas fa-check-circle" style="color: green; font-size: 24px; margin-top: 50px;"></i>' +
+              '</div>' +
+              '<div class="mt-5">' +
+              '<div class="d-flex justify-content-center align-items-center">' +
+              '<span class="mr-3 font-weight-bold">Explainable AI</span>' +
+              '<span class="explain-icon" data-toggle="tooltip" data-placement="top" title="' + document.explain_ai_content + '">' +
+              '<i class="fas fa-info-circle"></i>' +
+              '</span>' +
+              '</div>' +
+              '</div>' +
+              '</div>' +
+              '</div>' +
+              '</div>' +
+              '</div>' +
+              '</div>';
+
+            var imageModalHtml = '<div class="modal fade" id="imageModal' + document._id + '" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">' +
+              '<div class="modal-dialog modal-dialog-centered" role="document">' +
+              '<div class="modal-content">' +
+              '<div class="modal-header">' +
+              '<h5 class="modal-title" id="imageModalLabel">Predicted Image</h5>' +
+              '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+              '<span aria-hidden="true">&times;</span>' +
+              '</button>' +
+              '</div>' +
+              '<div class="modal-body text-center">' +
+              '<img src="' + document.predicted_image + '" class="img-fluid" alt="Predicted Image">' +
+              '</div>' +
+              '</div>' +
+              '</div>' +
+              '</div>';
+            // Append the card HTML to the main-content div
+            $('.main-content').append(cardHtml);
+          });
+
+        },
+
+        error: function (error) {
+          console.error("Error moving card: " + error.statusText);
+        }
+      });
+    }
+    $(document).ready(function () {
+      $("#rangeSlider").ionRangeSlider({
+        type: "double",
+        grid: true,
+        min: 0,
+        max: 100,
+        from: 0,
+        to: 55,
+        step: 1,
+        onFinish: function (data) {
+          $("#fromInput").val(data.from);
+          $("#toInput").val(data.to);
+        },
+      });
+
+      $("#fromInput, #toInput").on("change", function () {
+        var fromValue = parseInt($("#fromInput").val()) || 0;
+        var toValue = parseInt($("#toInput").val()) || 100;
+        $("#rangeSlider").data("ionRangeSlider").update({
+          from: fromValue,
+          to: toValue,
+        });
+      });
+      fromSlider.oninput = () => controlFromSlider(fromSlider, toSlider, fromInput);
+      toSlider.oninput = () => controlToSlider(fromSlider, toSlider, toInput);
+      loadCityOptions();
+      loadStateOptions();
+
+      $('[data-toggle="tooltip"]').tooltip();
+
+      $('#filter-form').submit(function (event) {
+        event.preventDefault();
+
+        var selectedMinPlasticCount = parseInt($('#fromInput').val(), 10);
+        var selectedMaxPlasticCount = parseInt($('#toInput').val(), 10);
+        var selectedStatus = $('input[name="radio"]:checked').val(); // Use the correct radio button selector
+        var selectedCity = $('#city-filter').val();
+        var selectedState = $('#state-filter').val();
+        console.log("Min Plastic Count:", selectedMinPlasticCount);
+        console.log("Max Plastic Count:", selectedMaxPlasticCount);
+        console.log("Selected Status:", selectedStatus);
+
+        // Send AJAX request to the backend to get filtered documents
+        $.ajax({
+          url: '/filter', // Update with your server route
+          method: 'POST',
+          data: {
+            fromInput: selectedMinPlasticCount, // Use fromInput here
+            toInput: selectedMaxPlasticCount,   // Use toInput here
+            status: selectedStatus,
+            city: selectedCity,
+            state: selectedState
+          },
+          success: function (response) {
+            console.log(response);
+            $('.main-content').empty();
+            if (response.length === 0) {
+              var noPlasticsMessage = '<div class="alert alert-warning no-plastics-alert" role="alert">' +
+                '<span class="no-plastics-icon">⚠️</span>' +
+                '<span class="no-plastics-text">No plastics in your applied filter</span>' +
+                '</div>'; $('.main-content').append(noPlasticsMessage);
+            } else {
+              response.forEach(function (document) {
+                var tickIconHtml = document.status === 'pending' ?
+                  '<div class="tick-icon" onclick="moveCardToCompleted(\'' + document._id + '\')">' +
+                  '<i class="fas fa-check-circle" style="color: green; font-size: 24px; margin-top: 50px;"></i>' +
+                  '</div>' : '';
+
+                var cardBodyClass = document.status === 'completed' ? 'completed-card' : '';
+                var cardHtml = '<div class="card mb-4 shadow-sm rounded" style="color: #007bff;" data-id="' + document._id + '">' +
+                  '<div class="card-body ' + cardBodyClass + '">' +
+                  '<div class="row">' +
+                  '<div class="col-md-4">' +
+                  '<div class="row mb-1">' +
+                  '<div class="col-md-12"><strong class="font-weight-bold">City</strong></div>' +
+                  '<div class="col-md-12">' + document.city + '</div>' +
+                  '</div>' +
+                  '<div class="row mb-1">' +
+                  '<div class="col-md-12"><strong class="font-weight-bold">State</strong></div>' +
+                  '<div class="col-md-12">' + document.state + '</div>' +
+                  '</div>' +
+                  '<div class="row mb-1">' +
+                  '<div class="col-md-12"><strong class="font-weight-bold">Geotag</strong></div>' +
+                  '<div class="col-md-12">' + document.geotag + '</div>' +
+                  '</div>' +
+                  '</div>' +
+                  '<div class="col-md-4 text-left align-items-left">' +
+                  '<div class="row">' +
+                  '<div class="col-md-12">' +
+                  '<div class="row mb-1">' +
+                  '<div class="col-md-12"><strong class="font-weight-bold">Plastic Count</strong></div>' +
+                  '<div class="col-md-12">' + document.plastic_count + '</div>' +
+                  '</div>' +
+                  '<div class="row mb-1">' +
+                  '<div class="col-md-12"><strong class="font-weight-bold">Time</strong></div>' +
+                  '<div class="col-md-12">' + document.time + '</div>' +
+                  '</div>' +
+                  '</div>' +
+                  '<div class="col-md-12 mt-3">' +
+                  '<button type="button" class="btn btn-link image-button" data-toggle="modal" data-target="#imageModal' + document._id + '">' +
+                  '<span class="font-weight-bold">Predicted Image</span>' +
+                  '<i class="fas fa-image"></i>' +
+                  '</button>' +
+                  '</div>' +
+                  '</div>' +
+                  '</div>' +
+                  '<div class="col-md-4 text-center align-items-center">' +
+                  tickIconHtml +
+                  '<div class="mt-5">' +
+                  '<div class="d-flex justify-content-center align-items-center">' +
+                  '<span class="mr-3 font-weight-bold">Explainable AI</span>' +
+                  '<span class="explain-icon" data-toggle="tooltip" data-placement="top" title="' + document.explain_ai_content + '">' +
+                  '<i class="fas fa-info-circle"></i>' +
+                  '</span>' +
+                  '</div>' +
+                  '</div>' +
+                  '</div>' +
+                  '</div>' +
+                  '</div>' +
+                  '</div>' +
+                  '</div>'
+                '<div class="modal fade" id="imageModal' + document._id + '" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">' +
+                  '<div class="modal-dialog modal-dialog-centered" role="document">' +
+                  '<div class="modal-content">' +
+                  '<div class="modal-header">' +
+                  '<h5 class="modal-title" id="imageModalLabel">Predicted Image</h5>' +
+                  '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+                  '<span aria-hidden="true">&times;</span>' +
+                  '</button>' +
+                  '</div>' +
+                  '<div class="modal-body text-center">' +
+                  '<img src="' + document.predicted_image + '" class="img-fluid" alt="Predicted Image">' +
+                  '</div>' +
+                  '</div>' +
+                  '</div>' +
+                  '</div>';
+                var imageModalHtml = '<div class="modal fade" id="imageModal' + document._id + '" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">' +
+                  '<div class="modal-dialog modal-dialog-centered" role="document">' +
+                  '<div class="modal-content">' +
+                  '<div class="modal-header">' +
+                  '<h5 class="modal-title" id="imageModalLabel">Predicted Image</h5>' +
+                  '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+                  '<span aria-hidden="true">&times;</span>' +
+                  '</button>' +
+                  '</div>' +
+                  '<div class="modal-body text-center">' +
+                  '<img src="' + document.predicted_image + '" class="img-fluid" alt="Predicted Image">' +
+                  '</div>' +
+                  '</div>' +
+                  '</div>' +
+                  '</div>';
+                $('.main-content').append(cardHtml);
+              });
+            }
+
+          },
+
+          error: function (error) {
+            console.error("Error fetching filtered documents: " + error.statusText);
+          }
+        });
+      });
+    });
+    function loadCityOptions() {
+      // Make an AJAX request to load city options
+      $.ajax({
+        url: '/get_city_options', // Replace with your server route
+        method: 'GET',
+        success: function (response) {
+          // Populate the city filter dropdown with options
+          var cityFilter = $('#city-filter');
+          cityFilter.empty();
+          cityFilter.append('<option value="">All</option>');
+          response.forEach(function (city) {
+            cityFilter.append('<option value="' + city + '">' + city + '</option>');
+          });
+        },
+        error: function (error) {
+          console.error("Error loading city options: " + error.statusText);
+        }
+      });
+    }
+
+    function loadStateOptions() {
+      // Make an AJAX request to load state options
+      $.ajax({
+        url: '/get_state_options', // Replace with your server route
+        method: 'GET',
+        success: function (response) {
+          // Populate the state filter dropdown with options
+          var stateFilter = $('#state-filter');
+          stateFilter.empty();
+          stateFilter.append('<option value="">All</option>');
+          response.forEach(function (state) {
+            stateFilter.append('<option value="' + state + '">' + state + '</option>');
+          });
+        },
+        error: function (error) {
+          console.error("Error loading state options: " + error.statusText);
+        }
+      });
+    }
+  </script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

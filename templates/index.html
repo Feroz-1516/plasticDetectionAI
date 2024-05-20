@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+
+  <div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ***** Header Area Start ***** -->
+  <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s" style="border-bottom: 1px solid rgb(156, 194, 255);">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <a href="#" class="logo" >
+              <img style="height: 80px;width: 250px;" src="{{ url_for('static', filename='assets/images/avlogo.png') }}" alt="">
+            </a>
+    
+            <ul class="nav">
+              <li class="scroll-to-section" id="home"><a href="#" class="nav-link1">Detect & Discover</a></li>
+              <li class="scroll-to-section" id="authority"> <a href="#authority" class="nav-link1" id="authority-link">Aqua Guardians</a>
+              </li>
+              <li class="scroll-to-section" id="report"><a href="#portfolio" class="nav-link1">Aqua Insights Hub</a></li>
+              <li class="scroll-to-section" id="community"><a href="#" class="nav-link1">Aqua Allies</a></li>
+
+              <li class="scroll-to-section"><a href="/user/signout"  >Sign Out</a></li> 
+        
+            </ul>        
+            <a class='menu-trigger'>
+                <span>Menu</span>
+            </a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+
+  
+  <section id="home-content" class="content-item"  style="display: block;">
+
+    
+    <div class="modal fade" id="locationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">Location Needed!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <label for="location-input">Enter the location of the plastic:</label>
+            <input type="text" class="form-control" id="location-input" style="margin: 10px 0px 10px 0;" placeholder="Enter location">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-modal">Close</button>
+            <button type="button" class="btn btn-primary" id="save-button">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+  <div class="overlay" id="modalOverlay">
+    <div class="own-modal">
+      <div class="modal-header1">
+        <h2>Camera</h2>
+        <span class="close-button" id="closeModalButton">&times;</span>
+      </div>
+      <div class="modal-content1">
+        <video id="camera-stream" style="width: 100%; height: auto;" autoplay></video>
+        <img id="captured-photo" style="display: none; width: 100%; height: auto;">
+
+      </div>
+      <div class="modal-footer1">
+        <button id="retake-button" style="display: none;" class="for-camera-button">Retake</button>
+        <button id="take-photo-button" class="for-camera-button">Take Photo</button>
+        <button id="upload-photo-button" style="display: none;" class="for-camera-button">Upload Photo</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="space-container">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-md-6">
+       
+          <div class="row">
+            <div class="col-md-12 first-half" >
+              <div class="upload-container">
+                <h1 style="color: white; cursor: pointer; caret-color: transparent;" class="header">Detect Plastics</h1>
+                <form id="upload-form" enctype="multipart/form-data" class="upload-form">
+                    <div class="wrap-row-inside" style="display: flex ; flex-direction: row; align-items: center;">
+                      <label for="media" class="file-input-label">
+                          Select Image
+                      </label>
+                      <input type="file" name="media" id="media" accept="image/*,video/*" style="display: none;">
+                      <input type="button" value="Take image" style="margin-left: 10px;" class="submit-button" id="start-camera-button">
+                    </div>
+                    <div  id="selected-file" class="selected-file" style="margin-top: 10px;margin-bottom:10px; color: white;"></div>
+                    <input type="button" value="Predict" class="submit-button" id="upload-button">
+                </form>
+              </div>
+            </div>
+          </div>
+         
+          <div class="row">
+            <div class="col-md-12 first-half2" >
+              <h6 style="text-align: center; color: white;margin-bottom: 10px;  cursor: pointer; caret-color: transparent;">Explainable AI</h6>
+              <p id="processing-p" style="text-align: center; margin-top: 25px; font-size: 16px !important;justify-content: center; color: rgb(255, 255, 255);font-size: 10px;">Wating to predict..</p>
+              <img id="processing" style="height: 150px; width: 150px;position:relative;top:20%;left: 50%; transform: translate(-50%, -50%);" src="{{ url_for('static', filename='assets/images/processing.gif') }}" alt="">
+              <p style="color: white;font-size: 12px;" id="explanation-paragraph"></p>
+            </div>
+          </div>
+        </div>
+    
+    
+        <div class="col-md-6 second-half" >
+          <div style="display: flex; align-items: center;align-content: center; flex-direction: column;" class="wrap-box">
+            <h2 class="header2 " style=" cursor: pointer; caret-color: transparent;">Predicted Image</h2>
+            <a id="googleMapsLink" target="_blank">
+              <button class="geoloc" style="margin-bottom: 10px;" >Geolocation</button>
+                  </a>
+          </div>
+          <div id="loading-message" style="display: none;"><img style="height: 200px;width: 200px;" src="{{ url_for('static', filename='assets/images/processing.gif') }}" alt=""></div>
+          <video id="predicted-video" style="display: none;" width="580" height="400" controls>
+            <source id="video-source" src="" type="video/mp4">
+            Your browser does not support the video tag.
+            </video>
+          <img id="predicted-image" style="display: none;">
+          <!-- Try -->
+
+          <div class="slideshow-container" id="slideshow-container" style="display: none; height:400px ;">
+
+            <div class="mySlides fade-modal">
+              <div class="numbertext">1 / 3</div>
+              <img id="predicted-image1" src="" style="width:100%;height:400px;">
+              <div class="text-modal">Ensmebled(YoloV8 ,FasterRCNN, YoloNAS)</div>
+            </div>
+          
+            <div class="mySlides fade-modal">
+              <div class="numbertext">2 / 3</div>
+              <img id="predicted-image2" src="" style="width:100% ;height:400px;" >
+              <div class="text-modal">Multi-class</div>
+            </div>
+          
+            <div class="mySlides fade-modal">
+              <div class="numbertext">3 / 3</div>
+              <img id="predicted-image3" src="" style="width:100%;height:400px;">
+              <div class="text-modal">Moving and stationary plastics</div>
+            </div>
+          
+            <a class="prev-modal" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next-modal" onclick="plusSlides(1)">&#10095;</a>
+          </div>
+          
+       
+          <!--  -->
+          <p id="waiting-p" style="text-align: center; margin-top: 50px; font-size: 16px !important; color: rgb(34, 34, 34);">waiting for an image...</p>
+          <img id="waiting" style="height: 300px; width: 300px  ;" src="{{ url_for('static', filename='assets/images/waitingclockbg.gif') }}" alt="waiting">
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- -------------------------------------------------------------------------------------------------------------------------- -->
+<section id="community-content"  style="display: none;">
+  
+  <div class="container bootdey">
+    <div class="community-header">
+      <h1>Hello Allies!!!👋🌍:</h1>
+    </div>
+    <div class="col-md-12 bootstrap snippets">
+        <div class="panel">
+            <div class="panel-body">
+                <textarea class="form-control" rows="3" placeholder="What are you thinking?" id="postText"></textarea>
+                <div class="mar-top clearfix" style="caret-color: transparent;">
+                    <button class="share-button btn btn-primary float-end" type="submit" id="postButton" disabled><i style="margin-right:5px ;"
+                            class="fa fa-pencil fa-fw"></i>Share</button>
+                </div>
+            </div>
+        </div>
+        <div id="postsContainer">
+      </div>
+    </div>
+</div> 
+</section>
+<!-- authority-content -->
+<section id="authority-content" style="display: none;">
+
+</section>
+
+<section id="report-content" style="display: none;height: 100%; width: 100%; padding-top:100px;">
+  <iframe src="https://aqua-vision-reports.streamlit.app/?embedded=true" frameborder="0" style="height: 100vh !important; width: 100%;" ></iframe>
+</section>
+<script>
+  let slideIndex = 1;
+showSlides(slideIndex);
+
+// Next/previous controls
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+// Thumbnail image controls
+
+
+function showSlides(n) {
+  let i;
+  let slides = document.getElementsByClassName("mySlides");
+  let dots = document.getElementsByClassName("dot");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+  for (i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";
+  dots[slideIndex-1].className += " active";
+}
+</script>
+<script src="/static/assets/js/index.js"></script>
+
+{% endblock %}
